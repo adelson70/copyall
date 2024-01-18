@@ -31,7 +31,7 @@ def ajustar_janela_ao_conteudo(root):
     y_pos = (altura_tela - altura) // 2
 
     # Define a geometria da janela
-    root.geometry(f"{largura+100}x{altura}+{x_pos}+{y_pos-130}")
+    root.geometry(f"{largura+100}x{altura+10}+{x_pos}+{y_pos-130}")
 
 # Função para escolher a pasta de origem dos arquivos a serem copiados
 def escolher_pasta_origem():
@@ -82,14 +82,22 @@ def copiar():
 
 # Criando objeto root
 janela = tk.Tk()
-janela.title('copyall')
+janela.title('CopyAll')
 
-tk.Label(janela, text='Escolha a pasta de origem dos arquivos').pack(pady=10)
-tk.Button(janela, text='Escolher pasta de origem', command=lambda: escolher_pasta_origem()).pack(pady=10)
+
+tk.Label(janela, text='Escolha a pasta de origem dos arquivos').pack(pady=5)
+tk.Button(janela, text='Escolher pasta de origem', command=lambda: escolher_pasta_origem()).pack(pady=5)
+
+# Espaço entre as labels
+tk.Label(janela, text='').pack(pady=2)
 
 tk.Label(janela, text='Escolha a pasta de destino para os arquivos copiados').pack(pady=10)
-tk.Button(janela, text='Escolher pasta de destino', command=lambda: escolher_pasta_destino()).pack(pady=10)
+tk.Button(janela, text='Escolher pasta de destino', command=lambda: escolher_pasta_destino()).pack(pady=5)
 
-tk.Button(janela, text='copyall!', command=lambda: copiar()).pack(pady=10)
+# Espaço entre as labels
+tk.Label(janela, text='').pack(pady=2)
 
+tk.Button(janela, text='COPYALL!', command=lambda: copiar()).pack(pady=5)
+
+ajustar_janela_ao_conteudo(janela)
 janela.mainloop()
