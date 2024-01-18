@@ -44,20 +44,11 @@ def copiar():
     if len(caminhos) == 2:
         caminho_origem = caminhos[0]
         caminho_destino = caminhos[1]
-
         comando = f'robocopy "{caminho_origem}" "{caminho_destino}" /e'
 
-        try:
-            resultado = subprocess.run(['powershell', '-Command', comando], capture_output=True, text=True, check=True)
-            print("Saída padrão:", resultado.stdout)
-
-            if resultado.stderr:  # Exibir mensagem apenas se houver erro
-                messagebox.showinfo('Aviso na cópia', f'Aviso durante a cópia:\n{resultado.stderr}')
-            
-        except subprocess.CalledProcessError as e:
-            messagebox.showinfo('Erro na cópia', f'Erro ao executar o comando:\n{e.stderr}')
-
+        subprocess.run(['powershell', '-Command', comando])
         caminhos.clear()
+
         messagebox.showinfo('Arquivos Copiados', 'Todos os arquivos foram copiados!')
     else:
         messagebox.showinfo('Pasta de destino incorreta', 'Escolha uma pasta de destino!')
