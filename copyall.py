@@ -42,7 +42,7 @@ def escolher_pasta_origem():
 
     pasta_origem = filedialog.askdirectory(title='Selecionar Pasta de Origem')
 
-    caminhos.append(pasta_origem)
+    caminho_origem.append(pasta_origem)
 
 # Função para escolher a pasta de destino dos arquivos que serão copiados
 def escolher_pasta_destino():
@@ -57,21 +57,20 @@ def escolher_pasta_destino():
 
         pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
 
-        caminhos.append(pasta_destino)
+        caminho_destino.append(pasta_destino)
 
-# Variavel lista que ira receber o caminho de origem e o caminho de destino
-caminhos = []
+# Variaveis lista que irão receber o caminho de origem e o caminho de destino
+caminho_origem = []
+caminho_destino = []
 
 # Função que ira executar a copia dos arquivos
 def copiar():
-    global caminhos
-    print(caminhos)
+    global caminho_origem
+    global caminho_destino
 
     # Se o usúario fez a seleção de ambas as pastas
     if len(caminhos) == 2:
-        caminho_origem = caminhos[0]
-        caminho_destino = caminhos[1]
-        comando = f'robocopy "{caminho_origem}" "{caminho_destino}" /e'
+        comando = f'robocopy "{caminho_origem[-1]}" "{caminho_destino[-1]}" /e'
 
         subprocess.run(['powershell', '-Command', comando])
         esperar(5)
@@ -83,8 +82,9 @@ def copiar():
         messagebox.showinfo('Escolha as pastas', 'Escolha uma pasta de destino e origem!')
 
     else:
-        messagebox.showinfo('Pasta de origem incorreta', 'Escolha uma pasta de origem!')
+        messagebox.showinfo('Pasta de destino incorreta', 'Escolha uma pasta de destino!')
 
+    print(caminhos)
 
 
 # Criando objeto root
