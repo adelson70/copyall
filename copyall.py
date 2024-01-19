@@ -3,7 +3,6 @@ import ctypes
 import sys
 from tkinter import filedialog, messagebox
 import subprocess
-from time import sleep as esperar
 
 # Função para verificar se a aplicação esta sendo executada com privilegios adm
 def is_admin():
@@ -70,7 +69,6 @@ def copiar():
         comando = f'robocopy "{caminho_origem[-1]}" "{caminho_destino[-1]}" /e'
 
         subprocess.run(['powershell', '-Command', comando])
-        esperar(5)
         messagebox.showinfo('Arquivos Copiados', 'Todos os arquivos foram copiados!')
 
     else:
