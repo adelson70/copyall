@@ -3,6 +3,7 @@ import ctypes
 import sys
 from tkinter import filedialog, messagebox
 import subprocess
+import psutil
 
 # Função para verificar se a aplicação esta sendo executada com privilegios adm
 def is_admin():
@@ -36,22 +37,15 @@ def ajustar_janela_ao_conteudo(root):
 # Função para escolher a pasta de origem dos arquivos a serem copiados
 def escolher_pasta_origem():
     global caminho_origem
-    root = tk.Tk()
-    root.withdraw()  # Oculta a janela principal
-
     pasta_origem = filedialog.askdirectory(title='Selecionar Pasta de Origem')
-
     caminho_origem.clear()
     caminho_origem.append(pasta_origem)
+    print(pasta_origem)
 
 # Função para escolher a pasta de destino dos arquivos que serão copiados
 def escolher_pasta_destino():
     global caminho_destino
-    root = tk.Tk()
-    root.withdraw()  # Oculta a janela principal
-
     pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
-
     caminho_destino.clear()
     caminho_destino.append(pasta_destino)
 
@@ -68,8 +62,19 @@ def copiar():
     if len(caminho_origem) and len(caminho_destino) == 1:
         comando = f'robocopy "{caminho_origem[-1]}" "{caminho_destino[-1]}" /e'
 
-        subprocess.run(['powershell', '-Command', comando])
+        processo = subprocess.run(['powershell', '-Command', comando])
         messagebox.showinfo('Arquivos Copiados', 'Todos os arquivos foram copiados!')
+
+        # Tentamos encontrar e encerrar o processo PowerShell usando o psutil
+        # Para que o progrma não fique executado em segundo plano depois de encerrar pela janela
+        for proc in psutil.process_iter(['pid', 'name']):
+            if 'powershell' in proc.info['name'].lower():
+                try:
+                    p = psutil.Process(proc.info['pid'])
+                    p.terminate()
+                except psutil.NoSuchProcess as e:
+                    print(f'Erro ao encerrar o processo: {e}')
+
 
     else:
         messagebox.showerror('Erro', 'Escolha uma pasta de origem e destino!')
@@ -95,4 +100,7 @@ tk.Label(janela, text='').pack(pady=2)
 tk.Button(janela, text='COPYALL!', command=lambda: copiar()).pack(pady=5)
 
 ajustar_janela_ao_conteudo(janela)
+
+# Para garantir que o programa sera encerrado
+janela.protocol("WM_DELETE_WINDOW", janela.destroy)
 janela.mainloop()
