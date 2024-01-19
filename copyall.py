@@ -34,24 +34,39 @@ def ajustar_janela_ao_conteudo(root):
     # Define a geometria da janela
     root.geometry(f"{largura+100}x{altura+10}+{x_pos}+{y_pos-130}")
 
+# Variaveis lista que irão receber o caminho de origem e o caminho de destino
+caminho_origem = []
+caminho_destino = []
+
 # Função para escolher a pasta de origem dos arquivos a serem copiados
 def escolher_pasta_origem():
     global caminho_origem
-    pasta_origem = filedialog.askdirectory(title='Selecionar Pasta de Origem')
     caminho_origem.clear()
-    caminho_origem.append(pasta_origem)
-    print(pasta_origem)
+
+    pasta_origem = filedialog.askdirectory(title='Selecionar Pasta de Origem')
+
+    # Tratamento de erro caso o usuario não selecione nenhuma pasta
+    if len(pasta_origem) > 1:
+        caminho_origem.append(pasta_origem)
+
+    else:
+        ...
+
 
 # Função para escolher a pasta de destino dos arquivos que serão copiados
 def escolher_pasta_destino():
     global caminho_destino
-    pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
     caminho_destino.clear()
-    caminho_destino.append(pasta_destino)
+    
+    pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
 
-# Variaveis lista que irão receber o caminho de origem e o caminho de destino
-caminho_origem = []
-caminho_destino = []
+    # Tratamento de erro caso o usuario não selecione nenhuma pasta
+    if len(pasta_destino) > 1:
+        caminho_destino.append(pasta_destino)
+
+    else:
+        ...
+
 
 # Função que ira executar a copia dos arquivos
 def copiar():
@@ -60,6 +75,9 @@ def copiar():
 
     # Se o usúario fez a seleção de ambas as pastas
     if len(caminho_origem) and len(caminho_destino) == 1:
+        print(len(caminho_destino))
+        print(caminho_destino)
+
         comando = f'robocopy "{caminho_origem[-1]}" "{caminho_destino[-1]}" /e'
 
         processo = subprocess.run(['powershell', '-Command', comando])
