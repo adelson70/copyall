@@ -49,10 +49,6 @@ def escolher_pasta_origem():
     if len(pasta_origem) > 1:
         caminho_origem.append(pasta_origem)
 
-    else:
-        ...
-
-
 # Função para escolher a pasta de destino dos arquivos que serão copiados
 def escolher_pasta_destino():
     global caminho_destino
@@ -63,10 +59,6 @@ def escolher_pasta_destino():
     # Tratamento de erro caso o usuario não selecione nenhuma pasta
     if len(pasta_destino) > 1:
         caminho_destino.append(pasta_destino)
-
-    else:
-        ...
-
 
 # Função que ira executar a copia dos arquivos
 def copiar():
