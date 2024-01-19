@@ -36,28 +36,25 @@ def ajustar_janela_ao_conteudo(root):
 
 # Função para escolher a pasta de origem dos arquivos a serem copiados
 def escolher_pasta_origem():
-    global caminhos
+    global caminho_origem
     root = tk.Tk()
     root.withdraw()  # Oculta a janela principal
 
     pasta_origem = filedialog.askdirectory(title='Selecionar Pasta de Origem')
 
+    caminho_origem.clear()
     caminho_origem.append(pasta_origem)
 
 # Função para escolher a pasta de destino dos arquivos que serão copiados
 def escolher_pasta_destino():
-    global caminhos
+    global caminho_destino
+    root = tk.Tk()
+    root.withdraw()  # Oculta a janela principal
 
-    # Caso o usuário não tenha escolhido a pasta de origem antes da pasta de destino
-    if len(caminhos) == 0:
-        messagebox.showinfo('Pasta de origem não selecionada!', 'Selecione primeiro a pasta de origem dos arquivos!')
-    else:
-        root = tk.Tk()
-        root.withdraw()  # Oculta a janela principal
+    pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
 
-        pasta_destino = filedialog.askdirectory(title='Selecionar Pasta de Destino')
-
-        caminho_destino.append(pasta_destino)
+    caminho_destino.clear()
+    caminho_destino.append(pasta_destino)
 
 # Variaveis lista que irão receber o caminho de origem e o caminho de destino
 caminho_origem = []
@@ -69,22 +66,15 @@ def copiar():
     global caminho_destino
 
     # Se o usúario fez a seleção de ambas as pastas
-    if len(caminhos) == 2:
+    if len(caminho_origem) and len(caminho_destino) == 1:
         comando = f'robocopy "{caminho_origem[-1]}" "{caminho_destino[-1]}" /e'
 
         subprocess.run(['powershell', '-Command', comando])
         esperar(5)
-        caminhos.clear()
-
         messagebox.showinfo('Arquivos Copiados', 'Todos os arquivos foram copiados!')
 
-    elif len(caminhos) == 0:
-        messagebox.showinfo('Escolha as pastas', 'Escolha uma pasta de destino e origem!')
-
     else:
-        messagebox.showinfo('Pasta de destino incorreta', 'Escolha uma pasta de destino!')
-
-    print(caminhos)
+        messagebox.showerror('Erro', 'Escolha uma pasta de origem e destino!')
 
 
 # Criando objeto root
